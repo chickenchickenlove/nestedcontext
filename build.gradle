@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    implementation 'com.google.guava:guava:33.2.0-jre'
+    implementation 'org.jctools:jctools-core:4.0.5'
+    implementation 'it.unimi.dsi:fastutil:8.5.14'
+    implementation 'org.reflections:reflections:0.9.11'
+    implementation 'com.github.ben-manes.caffeine:caffeine:3.1.8'
+
+    runtimeOnly 'ch.qos.logback:logback-classic:1.4.14'
+    runtimeOnly 'org.slf4j:log4j-over-slf4j:1.7.36'
+
+    implementation 'io.micrometer:context-propagation:1.1.1'
+
+    // Use your version.
+    implementation "com.linecorp.armeria:armeria:1.29.3"
+}
+
+test {
+    useJUnitPlatform()
+}
