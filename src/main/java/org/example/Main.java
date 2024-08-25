@@ -58,7 +58,15 @@ public class Main {
                                   return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
                                                          "/api/context-path/[a1|a2]/[b1|b2]/[c1|c2]/my-service2");
                               }
-                          })));
+                          })))
+          .contextPaths(Set.of("/b3", "/b4"), ctx11 -> ctx11
+                  .service("/my-service", new HttpService() {
+                      @Override
+                      public HttpResponse serve(ServiceRequestContext ctx, HttpRequest req) throws Exception {
+                          return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
+                                                 "/api/context-path/[a1|a2]/[b3|b4]/my-service");
+                      }
+                  }));
 
         sb.virtualHost("foo.com")
           .contextPath("/virtual-foo")
