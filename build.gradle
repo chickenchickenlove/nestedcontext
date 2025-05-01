@@ -25,7 +25,7 @@ dependencies {
     implementation 'io.micrometer:context-propagation:1.1.1'
 
     // Use your version.
-    implementation "com.linecorp.armeria:armeria:1.29.3"
+    implementation "com.linecorp.armeria:armeria:1.30.0"
 }
 
 test {
