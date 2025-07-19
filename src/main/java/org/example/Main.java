@@ -19,7 +19,7 @@ public class Main {
         sb.http(port);
         sb.baseContextPath("/api")
           .contextPath("/context-path/a1", "/context-path/a2")
-          .contextPaths(Set.of("/b1", "/b2"), ctx1 -> ctx1
+          .contextPath(Set.of("/b1", "/b2"), ctx1 -> ctx1
                   .annotatedService(new Object() {
                       @Get("/svc1")
                       public HttpResponse hello1() {
@@ -41,7 +41,7 @@ public class Main {
                                                  "/api/context-path/[a1|a2]/[b1|b2]/my-service");
                       }
                   })
-                  .contextPaths(Set.of("/c1", "/c2"), ctx2 -> ctx2
+                  .contextPath(Set.of("/c1", "/c2"), ctx2 -> ctx2
                           .service("/my-service1", new HttpService() {
                               @Override
                               public HttpResponse serve(ServiceRequestContext ctx, HttpRequest req)
@@ -58,7 +58,7 @@ public class Main {
                                                          "/api/context-path/[a1|a2]/[b1|b2]/[c1|c2]/my-service2");
                               }
                           })))
-          .contextPaths(Set.of("/b3", "/b4"), ctx11 -> ctx11
+          .contextPath(Set.of("/b3", "/b4"), ctx11 -> ctx11
                   .service("/my-service", new HttpService() {
                       @Override
                       public HttpResponse serve(ServiceRequestContext ctx, HttpRequest req) throws Exception {
@@ -69,7 +69,7 @@ public class Main {
 
         sb.virtualHost("foo.com")
           .contextPath("/virtual-foo")
-          .contextPaths(Set.of("/a1", "/a2"), ctx -> ctx
+          .contextPath(Set.of("/a1", "/a2"), ctx -> ctx
                   .service("/my-service1", new HttpService() {
                       @Override
                       public HttpResponse serve(ServiceRequestContext ctx, HttpRequest req)
@@ -99,7 +99,7 @@ public class Main {
                                                  "foo.com /virtual-foo/[a1|a2]/svc2");
                       }}
                   )
-                  .contextPaths(Set.of("/b1", "/b2"), ctx2 -> ctx2
+                  .contextPath(Set.of("/b1", "/b2"), ctx2 -> ctx2
                           .service("/my-service", new HttpService() {
                               @Override
                               public HttpResponse serve(ServiceRequestContext ctx, HttpRequest req)
@@ -112,7 +112,7 @@ public class Main {
 
         sb.virtualHost("bar.com")
           .contextPath("/virtual-foo")
-          .contextPaths(Set.of("/a1", "/a2"), ctx -> ctx
+          .contextPath(Set.of("/a1", "/a2"), ctx -> ctx
                   .service("/my-service1", new HttpService() {
                       @Override
                       public HttpResponse serve(ServiceRequestContext ctx, HttpRequest req)
@@ -142,7 +142,7 @@ public class Main {
                                                  "bar.com /virtual-foo/[a1|a2]/svc2");
                       }}
                   )
-                  .contextPaths(Set.of("/b1", "/b2"), ctx2 -> ctx2
+                  .contextPath(Set.of("/b1", "/b2"), ctx2 -> ctx2
                           .service("/my-service", new HttpService() {
                               @Override
                               public HttpResponse serve(ServiceRequestContext ctx, HttpRequest req)
@@ -155,7 +155,7 @@ public class Main {
 
         sb.virtualHost("foooo.com")
           .contextPath(Set.of("/virtual-foooo"), ctx -> ctx
-                  .contextPaths(Set.of("/a1", "/a2"), ctx1 -> ctx1
+                  .contextPath(Set.of("/a1", "/a2"), ctx1 -> ctx1
                           .service("/my-service1", new HttpService() {
                               @Override
                               public HttpResponse serve(ServiceRequestContext ctx, HttpRequest req)
@@ -186,7 +186,7 @@ public class Main {
                                                 }
                                             }
                           )
-                          .contextPaths(Set.of("/b1", "/b2"), ctx2 -> ctx2
+                          .contextPath(Set.of("/b1", "/b2"), ctx2 -> ctx2
                                   .service("/my-service", new HttpService() {
                                       @Override
                                       public HttpResponse serve(ServiceRequestContext ctx, HttpRequest req)
@@ -197,50 +197,6 @@ public class Main {
                                   }))
                   )
           );
-
-        sb.contextPath(Set.of("/context-path1000/a1", "/context-path1000/a2"), ctx3 -> ctx3
-                .service("/svc1000", new HttpService() {
-                    @Override
-                    public HttpResponse serve(ServiceRequestContext ctx, HttpRequest req)
-                            throws Exception {
-                        return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
-                                               "/api/context-path1000/[a1|a2]/svc1000");
-                    }
-                })
-                .contextPaths(Set.of("/b1", "/b2"), ctx31 -> ctx31
-                        .service("/svc2000", new HttpService() {
-                            @Override
-                            public HttpResponse serve(ServiceRequestContext ctx, HttpRequest req)
-                                    throws Exception {
-                                return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
-                                                       "/api/context-path1000/[a1|a2]/[b1|b2]/svc2000");
-                            }
-                        }))
-                .contextPaths(Set.of("/b3", "/b4"), ctx32 -> ctx32
-                        .service("/svc2001", new HttpService() {
-                            @Override
-                            public HttpResponse serve(ServiceRequestContext ctx, HttpRequest req)
-                                    throws Exception {
-                                return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
-                                                       "/api/context-path1000/[a1|a2]/[b3|b4]/svc2001");
-                            }
-                        })
-                )
-                .contextPaths(Set.of("/b5", "/b6"), ctx33 -> ctx33
-                        .annotatedService(new Object() {
-                            @Get("/svc1")
-                            public HttpResponse hello1() {
-                                return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
-                                                       "/api/context-path1000/[a1|a2]/[b5|b6]/svc1");
-                            }
-
-                            @Get("/svc2")
-                            public HttpResponse hello2() {
-                                return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
-                                                       "/api/context-path1000/[a1|a2]/[b5|b6]/svc2");
-                            }
-                        }))
-        );
 
         return sb.build();
     }

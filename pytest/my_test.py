@@ -93,33 +93,6 @@ import pytest
         ('/virtual-foooo/a2/b1/my-service', 'foooo.com', 200, 'foooo.com /virtual-foooo/[a1|a2]/[b1|b2]/my-service'),
         ('/virtual-foooo/a2/b2/my-service', 'foooo.com', 200, 'foooo.com /virtual-foooo/[a1|a2]/[b1|b2]/my-service'),
 
-
-
-        # Other - Depth1
-        ('/api/context-path1000/a1/svc1000', '', 200, "/api/context-path1000/[a1|a2]/svc1000"),
-        ('/api/context-path1000/a2/svc1000', '', 200, "/api/context-path1000/[a1|a2]/svc1000"),
-
-        ### Other - Depth2
-        ('/api/context-path1000/a1/b1/svc2000', '', 200, "/api/context-path1000/[a1|a2]/[b1|b2]/svc2000"),
-        ('/api/context-path1000/a1/b2/svc2000', '', 200, "/api/context-path1000/[a1|a2]/[b1|b2]/svc2000"),
-        ('/api/context-path1000/a2/b1/svc2000', '', 200, "/api/context-path1000/[a1|a2]/[b1|b2]/svc2000"),
-        ('/api/context-path1000/a2/b2/svc2000', '', 200, "/api/context-path1000/[a1|a2]/[b1|b2]/svc2000"),
-
-        ('/api/context-path1000/a1/b3/svc2001', '', 200, "/api/context-path1000/[a1|a2]/[b3|b4]/svc2001"),
-        ('/api/context-path1000/a1/b4/svc2001', '', 200, "/api/context-path1000/[a1|a2]/[b3|b4]/svc2001"),
-        ('/api/context-path1000/a2/b3/svc2001', '', 200, "/api/context-path1000/[a1|a2]/[b3|b4]/svc2001"),
-        ('/api/context-path1000/a2/b4/svc2001', '', 200, "/api/context-path1000/[a1|a2]/[b3|b4]/svc2001"),
-
-        ('/api/context-path1000/a1/b5/svc1', '', 200, "/api/context-path1000/[a1|a2]/[b5|b6]/svc1"),
-        ('/api/context-path1000/a1/b6/svc1', '', 200, "/api/context-path1000/[a1|a2]/[b5|b6]/svc1"),
-        ('/api/context-path1000/a2/b5/svc1', '', 200, "/api/context-path1000/[a1|a2]/[b5|b6]/svc1"),
-        ('/api/context-path1000/a2/b6/svc1', '', 200, "/api/context-path1000/[a1|a2]/[b5|b6]/svc1"),
-
-        ('/api/context-path1000/a1/b5/svc2', '', 200, "/api/context-path1000/[a1|a2]/[b5|b6]/svc2"),
-        ('/api/context-path1000/a1/b6/svc2', '', 200, "/api/context-path1000/[a1|a2]/[b5|b6]/svc2"),
-        ('/api/context-path1000/a2/b5/svc2', '', 200, "/api/context-path1000/[a1|a2]/[b5|b6]/svc2"),
-        ('/api/context-path1000/a2/b6/svc2', '', 200, "/api/context-path1000/[a1|a2]/[b5|b6]/svc2"),
-
     ]
 )
 async def test_nested_context_paths(
