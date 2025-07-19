@@ -67,6 +67,71 @@ public class Main {
                       }
                   }));
 
+        sb.contextPath("/context-path/a1", "/context-path/a2")
+          .contextPath(Set.of("/b1", "/b2"), ctx1 -> ctx1
+                  .annotatedService(new Object() {
+                      @Get("/svc1")
+                      public HttpResponse hello1() {
+                          return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
+                                                 "/api/context-path/[a1|a2]/[b1|b2]/svc1");
+                      }
+
+                      @Get("/svc2")
+                      public HttpResponse hello2() {
+                          return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
+                                                 "/api/context-path/[a1|a2]/[b1|b2]/svc2");
+                      }
+
+                  })
+                  .service("/my-service", new HttpService() {
+                      @Override
+                      public HttpResponse serve(ServiceRequestContext ctx, HttpRequest req) throws Exception {
+                          return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
+                                                 "/api/context-path/[a1|a2]/[b1|b2]/my-service");
+                      }
+                  })
+                  .contextPath(Set.of("/c1", "/c2"), ctx2 -> ctx2
+                          .service("/my-service1", new HttpService() {
+                              @Override
+                              public HttpResponse serve(ServiceRequestContext ctx, HttpRequest req)
+                                      throws Exception {
+                                  return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
+                                                         "/api/context-path/[a1|a2]/[b1|b2]/[c1|c2]/my-service1");
+                              }
+                          })
+                          .service("/my-service2", new HttpService() {
+                              @Override
+                              public HttpResponse serve(ServiceRequestContext ctx, HttpRequest req)
+                                      throws Exception {
+                                  return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
+                                                         "/api/context-path/[a1|a2]/[b1|b2]/[c1|c2]/my-service2");
+                              }
+                          })))
+          .contextPath(Set.of("/b3", "/b4"), ctx11 -> ctx11
+                  .service("/my-service", new HttpService() {
+                      @Override
+                      public HttpResponse serve(ServiceRequestContext ctx, HttpRequest req) throws Exception {
+                          return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
+                                                 "/api/context-path/[a1|a2]/[b3|b4]/my-service");
+                      }
+                  }));
+
+        sb.toContextBuilder()
+          .contextPath(Set.of("/q1", "/q2"), ctx1 -> ctx1
+                  .annotatedService(new Object() {
+                      @Get("/svc1")
+                      public HttpResponse hello1() {
+                          return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
+                                                 "/api/[q1|q2]/svc1");
+                      }
+
+                      @Get("/svc2")
+                      public HttpResponse hello2() {
+                          return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
+                                                 "/api/[q1|q2]/svc2");
+                      }
+                  }));
+
         sb.virtualHost("foo.com")
           .contextPath("/virtual-foo")
           .contextPath(Set.of("/a1", "/a2"), ctx -> ctx

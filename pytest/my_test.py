@@ -51,6 +51,12 @@ import pytest
         ('/api/context-path/a2/b3/my-service', '', 200, '/api/context-path/[a1|a2]/[b3|b4]/my-service'),
         ('/api/context-path/a2/b4/my-service', '', 200, '/api/context-path/[a1|a2]/[b3|b4]/my-service'),
 
+        # Depth-1 toContextBuilder()
+        ('/api/q1/svc1', '', 200, '/api/[q1|q2]/svc1'),
+        ('/api/q2/svc1', '', 200, '/api/[q1|q2]/svc1'),
+        ('/api/q1/svc2', '', 200, '/api/[q1|q2]/svc2'),
+        ('/api/q2/svc2', '', 200, '/api/[q1|q2]/svc2'),
+
         # VirtualHost foo.com and Depth-1 service() test
         ('/virtual-foo/a1/my-service1', 'foo.com', 200, 'foo.com /virtual-foo/[a1|a2]/my-service1'),
         ('/virtual-foo/a2/my-service1', 'foo.com', 200, 'foo.com /virtual-foo/[a1|a2]/my-service1'),
