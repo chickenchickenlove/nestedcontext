@@ -25,6 +25,23 @@ import pytest
         ('/api/context-path/a2/b1/my-service', '', 200, '/api/context-path/[a1|a2]/[b1|b2]/my-service'),
         ('/api/context-path/a2/b2/my-service', '', 200, '/api/context-path/[a1|a2]/[b1|b2]/my-service'),
 
+        # # new service() test
+        ('/api/a/b/c/svc1', '', 200, "/a/b/c/svc1 or /q/w/e/svc1"),
+        ('/api/q/w/e/svc1', '', 200, "/a/b/c/svc1 or /q/w/e/svc1"),
+        ('/api/a/b/c/svc2', '', 200, "/a/b/c/svc2 or /q/w/e/svc2"),
+        ('/api/q/w/e/svc2', '', 200, "/a/b/c/svc2 or /q/w/e/svc2"),
+
+        ('/api/a/b/c/z/x/c/svc3', '', 200, "/api[ /a/b/c | /q/w/e ][ /z/x/c | /e/f/g ]/svc3"),
+        ('/api/a/b/c/e/f/g/svc3', '', 200, "/api[ /a/b/c | /q/w/e ][ /z/x/c | /e/f/g ]/svc3"),
+        ('/api/a/b/c/z/x/c/svc4', '', 200, "/api[ /a/b/c | /q/w/e ][ /z/x/c | /e/f/g ]/svc4"),
+        ('/api/a/b/c/e/f/g/svc4', '', 200, "/api[ /a/b/c | /q/w/e ][ /z/x/c | /e/f/g ]/svc4"),
+
+        ('/api/q/w/e/z/x/c/svc3', '', 200, "/api[ /a/b/c | /q/w/e ][ /z/x/c | /e/f/g ]/svc3"),
+        ('/api/q/w/e/z/x/c/svc4', '', 200, "/api[ /a/b/c | /q/w/e ][ /z/x/c | /e/f/g ]/svc4"),
+        ('/api/q/w/e/e/f/g/svc3', '', 200, "/api[ /a/b/c | /q/w/e ][ /z/x/c | /e/f/g ]/svc3"),
+        ('/api/q/w/e/e/f/g/svc4', '', 200, "/api[ /a/b/c | /q/w/e ][ /z/x/c | /e/f/g ]/svc4"),
+
+
         # Depth-2 service() test
         ('/api/context-path/a1/b1/c1/my-service1', '', 200, '/api/context-path/[a1|a2]/[b1|b2]/[c1|c2]/my-service1'),
         ('/api/context-path/a1/b1/c2/my-service1', '', 200, '/api/context-path/[a1|a2]/[b1|b2]/[c1|c2]/my-service1'),

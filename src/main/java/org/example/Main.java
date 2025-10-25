@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.List;
 import java.util.Set;
 
 import com.linecorp.armeria.common.HttpRequest;
@@ -67,6 +68,42 @@ public class Main {
                       }
                   }));
 
+        sb.contextPath(List.of("/a/b/c", "/q/w/e"), ctx1 -> {
+            ctx1.annotatedService(new Object() {
+                @Get("/svc1")
+                public HttpResponse hello1() {
+                    return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
+                                           "/a/b/c/svc1 or /q/w/e/svc1");
+                }
+            });
+
+            ctx1.annotatedService(new Object() {
+                @Get("/svc2")
+                public HttpResponse hello1() {
+                    return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
+                                           "/a/b/c/svc2 or /q/w/e/svc2");
+                }
+            });
+
+            ctx1.contextPath(List.of("/z/x/c", "/e/f/g"), ctx11 -> {
+                ctx11.annotatedService(new Object() {
+                    @Get("/svc3")
+                    public HttpResponse hello1() {
+                        return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
+                                               "/api[ /a/b/c | /q/w/e ][ /z/x/c | /e/f/g ]/svc3");
+                    }
+                });
+
+                ctx11.annotatedService(new Object() {
+                    @Get("/svc4")
+                    public HttpResponse hello1() {
+                        return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
+                                               "/api[ /a/b/c | /q/w/e ][ /z/x/c | /e/f/g ]/svc4");
+                    }
+                });
+            });
+        });
+
         sb.contextPath("/context-path/a1", "/context-path/a2")
           .contextPath(Set.of("/b1", "/b2"), ctx1 -> ctx1
                   .annotatedService(new Object() {
@@ -116,9 +153,8 @@ public class Main {
                       }
                   }));
 
-        sb.toContextBuilder()
-          .contextPath(Set.of("/q1", "/q2"), ctx1 -> ctx1
-                  .annotatedService(new Object() {
+        sb.contextPath(Set.of("/q1", "/q2"), ctx1 -> ctx1
+              .annotatedService(new Object() {
                       @Get("/svc1")
                       public HttpResponse hello1() {
                           return HttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8,
